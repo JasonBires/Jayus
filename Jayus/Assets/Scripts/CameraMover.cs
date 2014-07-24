@@ -4,11 +4,14 @@ using System.Collections;
 public class CameraMover : MonoBehaviour {
 	public float speed;
 	public float rotationSpeed;
-
+	
 	private float xRotation;
 	private float yRotation;
 
 	private TimeController timeControl;
+
+	public AudioSource forwardMove;
+	public AudioSource timeReverse;
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +29,15 @@ public class CameraMover : MonoBehaviour {
 			Vector3[] temp = timeControl.readOff();
 			transform.Translate (-temp[0]);
 			transform.localEulerAngles = temp[1];
+			if (!timeReverse.isPlaying) {
+				timeReverse.Play();
+				forwardMove.Stop();
+			}
 		} else {
+			if (!forwardMove.isPlaying) {
+				timeReverse.Stop();
+				forwardMove.Play();
+			}
 			float translationZ = Input.GetAxis ("Vertical") * speed;
 			float translationX = Input.GetAxis ("Horizontal") * speed;
 			translationZ *= Time.deltaTime;
