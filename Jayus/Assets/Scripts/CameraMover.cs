@@ -11,19 +11,22 @@ public class CameraMover : ObjectBehavior
     private float xRotation;
     private float yRotation;
 
-    [IoC.Inject]
-    private ITimeController _timeControl { set; get; }
+    //[IoC.Inject]
+    //private ITimeController _timeControl { set; get; }
+
+    private StateTracker<PositionState> _stateTracker { get; set; }
 
     public AudioSource forwardMove;
     public AudioSource timeReverse;
 
-    // Use this for initialization
     public override void Start()
     {
-        base.Start();
+        //base.Start();
 
         xRotation = 0;
         yRotation = 0;
+
+        _stateTracker = new StateTracker<PositionState>();
     }
 
     /* Update is called once per frame
@@ -32,16 +35,14 @@ public class CameraMover : ObjectBehavior
      */
     void Update()
     {
-        if (Input.GetKey(KeyCode.T) && !_timeControl.isEmpty())
+        if (Input.GetKey(KeyCode.T))
         {
-            Vector3[] temp = _timeControl.readOff();
-            transform.Translate(-temp[0]);
-            transform.localEulerAngles = temp[1];
             if (!timeReverse.isPlaying)
             {
                 timeReverse.Play();
                 forwardMove.Stop();
             }
+            LoadState();
         }
         else
         {
@@ -64,7 +65,21 @@ public class CameraMover : ObjectBehavior
             Vector3 rotateBy = new Vector3(yRotation, xRotation, 0);
             transform.localEulerAngles = new Vector3(yRotation, xRotation, 0);
 
-            _timeControl.addFrame(translateBy, rotateBy);
+            SaveState();
         }
+    }
+
+    void LoadState()
+    {
+        var newState = _stateTracker.ReadPreviousTick();
+
+        transform.position = newState.Position;
+        transform.localEulerAngles = newState.Rotation;
+    }
+
+    void SaveState()
+    {
+        var state = new PositionState() { Position = transform.position, Rotation = transform.localEulerAngles };
+        _stateTracker.SaveStateForCurrentTick(state);
     }
 }
