@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Jayus.Core
+namespace Jayus.ObjectStates
 {
 	public class PositionState : ObjectState
 	{

@@ -3,31 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Jayus.Core;
+using Jayus.ObjectStates;
 using Jayus.TimeControl;
 using UnityEngine;
 
 namespace Jayus.TimeControl
 {
-	public class TimeTrackingBehavior : ObjectBehavior
+	public class BasicEntityTracking : ObjectBehavior
 	{
-        private StateTracker<PositionState> _stateTracker { get; set; }
+        private StateTracker<RigidBodyState> _stateTracker { get; set; }
 
         [IoC.Inject]
-        private ITimeController _timeControl { get; set; }
+        protected ITimeController _timeControl { get; set; }
 
         public override void Start()
         {
             base.Start();
 
             //Newing this up instead of injecting it because the current IoC framework does not allow for transient lifestyles
-            _stateTracker = new StateTracker<PositionState>();
+            _stateTracker = new StateTracker<RigidBodyState>();
+
+            if (rigidbody == null)
+            {
+                throw new Exception("There is no rigidbody attached to this object! Behavior is invalid!");
+            }
         }
 
         /* Update is called once per frame
         * If T is pressed and timeControl's backing array isn't spent, rewind time
         * Else change the object as normal and record the object's rotation and translation in timeControl
         */
-        void Update()
+        protected virtual void Update()
         {
             if (_timeControl.TimeSpeed < 0)
             {
@@ -39,17 +45,25 @@ namespace Jayus.TimeControl
             }
         }
 
-        void LoadState()
+        protected virtual void LoadState()
         {
-            var newState = _stateTracker.ReadPreviousTick() as PositionState;
+            var newState = _stateTracker.ReadPreviousTick();
 
             transform.position = newState.Position;
             transform.localEulerAngles = newState.Rotation;
+            rigidbody.velocity = newState.Velocity;
+            rigidbody.angularVelocity = newState.AngularVelocity;
         }
 
-        void SaveState()
+        protected virtual void SaveState()
         {
-            var state = new PositionState() { Position = transform.position, Rotation = transform.localEulerAngles };
+            var state = new RigidBodyState() 
+            {
+                Position = transform.position,
+                Rotation = transform.localEulerAngles,
+                Velocity = rigidbody.velocity,
+                AngularVelocity = rigidbody.angularVelocity 
+            };
             _stateTracker.SaveStateForCurrentTick(state);
         }
 	}
