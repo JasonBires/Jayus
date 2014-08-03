@@ -54,7 +54,12 @@ namespace IoC
         {
             var interfaces = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsInterface && t.Namespace == Namespace).ToList();
             var classes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.Namespace == Namespace).ToList();
-            classes.ToList().ForEach(c => this.Register(interfaces.First(i => i.Name.EndsWith(c.Name)), c));
+            classes.ToList().ForEach(c =>
+            {
+                var matching = interfaces.FirstOrDefault(i => i.Name.EndsWith(c.Name));
+                if(matching != null)
+                    this.Register(matching, c);
+            });
         }
 
         //

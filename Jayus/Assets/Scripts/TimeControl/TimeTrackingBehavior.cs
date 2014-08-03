@@ -12,9 +12,12 @@ namespace Jayus.TimeControl
 	{
         private StateTracker<PositionState> _stateTracker { get; set; }
 
+        [IoC.Inject]
+        private ITimeController _timeControl { get; set; }
+
         public override void Start()
         {
-            //base.Start();
+            base.Start();
 
             //Newing this up instead of injecting it because the current IoC framework does not allow for transient lifestyles
             _stateTracker = new StateTracker<PositionState>();
@@ -26,7 +29,7 @@ namespace Jayus.TimeControl
         */
         void Update()
         {
-            if (Input.GetKey(KeyCode.T))
+            if (_timeControl.TimeSpeed < 0)
             {
                 LoadState();
             }

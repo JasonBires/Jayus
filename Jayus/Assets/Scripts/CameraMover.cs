@@ -11,8 +11,8 @@ public class CameraMover : ObjectBehavior
     private float xRotation;
     private float yRotation;
 
-    //[IoC.Inject]
-    //private ITimeController _timeControl { set; get; }
+    [IoC.Inject]
+    private ITimeController _timeControl { set; get; }
 
     private StateTracker<PositionState> _stateTracker { get; set; }
 
@@ -21,7 +21,7 @@ public class CameraMover : ObjectBehavior
 
     public override void Start()
     {
-        //base.Start();
+        base.Start();
 
         xRotation = 0;
         yRotation = 0;
@@ -35,7 +35,8 @@ public class CameraMover : ObjectBehavior
      */
     void Update()
     {
-        if (Input.GetKey(KeyCode.T))
+        HandleKeypress();
+        if (_timeControl.TimeSpeed < 0)
         {
             if (!timeReverse.isPlaying)
             {
@@ -66,6 +67,19 @@ public class CameraMover : ObjectBehavior
             transform.localEulerAngles = new Vector3(yRotation, xRotation, 0);
 
             SaveState();
+        }
+    }
+
+    //TODO - Move out into another class
+    void HandleKeypress()
+    {
+        if (Input.GetKey(KeyCode.T))
+        {
+            _timeControl.TimeSpeed = -1.0F;
+        }
+        else
+        {
+            _timeControl.TimeSpeed = 1.0F;
         }
     }
 
