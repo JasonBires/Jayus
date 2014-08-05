@@ -22,6 +22,7 @@ namespace IoC
 	public interface IInternalContainer
 	{
 		void Register(System.Type type);
+        void RegisterTransientType(System.Type type, System.Type mapper);
 		void Register(System.Type type, System.Type mapper);
 		void Register(System.Type type, IProvider provider);
 		

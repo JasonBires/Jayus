@@ -3,6 +3,7 @@ using System.Collections;
 using Jayus.Core;
 using Jayus.TimeControl;
 using Jayus.ObjectStates;
+using System;
 
 public class CameraMover : ObjectBehavior
 {

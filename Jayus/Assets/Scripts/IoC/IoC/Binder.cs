@@ -29,6 +29,16 @@ namespace IoC
 		{
 			_container.Register(type, typeof(T));
 		}
+
+        virtual public void AsTransient()
+        {
+            _container.RegisterTransientType(type, type);
+        }
+
+        virtual public void AsTransient<T>() where T:class, Contractor
+        {
+            _container.RegisterTransientType(type, typeof(T));
+        }
 		
 		virtual public void AsSingle<T>(T istance) where T:class, Contractor
 		{

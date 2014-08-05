@@ -10,6 +10,7 @@ namespace IoC
     {
         public Container()
         {
+            _transientTypes = new List<Type>();
             _providers = new Dictionary<Type, IProvider>();
             _uniqueInstances = new Dictionary<Type, object>();
             _injectLater = new HashSet<object>();
@@ -85,6 +86,15 @@ namespace IoC
             _providers[type] = new StandardProvider(type);
         }
 
+        virtual public void RegisterTransientType(System.Type type, System.Type mapper)
+        {
+            if(!_transientTypes.Contains(type))
+                _transientTypes.Add(type);
+
+            DesignByContract.Check.Require(type.IsAssignableFrom(mapper));
+            _providers[type] = new StandardProvider(mapper);
+        }
+
         virtual public void Map(System.Type type, System.Type mapper, object instance)
         {
             DesignByContract.Check.Require(instance != null, "IoC: Trying to register an null instance of type: " + type.FullName);
@@ -149,6 +159,8 @@ namespace IoC
             {
                 IProvider provider = _providers[contract];
 
+                if (_transientTypes.Contains(contract))
+                    return provider.Create();
                 if (_uniqueInstances.ContainsKey(provider.contract) == false)
                     return CreateDependency(provider);
                 else
@@ -188,6 +200,7 @@ namespace IoC
             return obj;
         }
 
+        private readonly List<Type> _transientTypes;
         private readonly Dictionary<Type, IProvider> _providers;
         private readonly Dictionary<Type, object> _uniqueInstances;
 
