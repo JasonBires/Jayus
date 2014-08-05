@@ -10,7 +10,8 @@ namespace Jayus.TimeControl
 {
 	public class GenericTracker<T> : ObjectBehavior where T : ObjectState
 	{
-        protected StateTracker<T> _stateTracker { get; set; }
+        [IoC.Inject]
+        protected IStateTracker _stateTracker { get; set; }
 
         [IoC.Inject]
         protected ITimeController _timeControl { get; set; }
@@ -18,21 +19,18 @@ namespace Jayus.TimeControl
         public override void Start()
         {
             base.Start();
-
-            //Newing this up instead of injecting it because the current IoC framework does not allow for transient lifestyles
-            _stateTracker = new StateTracker<T>();
         }
 
         protected virtual void Update()
         {
             if (_timeControl.TimeSpeed < 0)
             {
-                var newState = _stateTracker.ReadPreviousTick();
+                var newState = _stateTracker.ReadPreviousTick<T>();
                 LoadState(newState);
             }
             else
             {
-                _stateTracker.SaveStateForCurrentTick(SaveState());
+                _stateTracker.SaveStateForCurrentTick<T>(SaveState());
             }
         }
 

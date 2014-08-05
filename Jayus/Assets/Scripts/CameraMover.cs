@@ -16,7 +16,8 @@ public class CameraMover : ObjectBehavior
     [IoC.Inject]
     private ITimeController _timeControl { set; get; }
 
-    private StateTracker<PositionState> _stateTracker { get; set; }
+    [IoC.Inject]
+    private IStateTracker _stateTracker { get; set; }
 
     public AudioSource forwardMove;
     public AudioSource timeReverse;
@@ -27,8 +28,6 @@ public class CameraMover : ObjectBehavior
 
         xRotation = 0;
         yRotation = 0;
-
-        _stateTracker = new StateTracker<PositionState>();
     }
 
     /* Update is called once per frame
@@ -87,7 +86,7 @@ public class CameraMover : ObjectBehavior
 
     void LoadState()
     {
-        var newState = _stateTracker.ReadPreviousTick();
+        var newState = _stateTracker.ReadPreviousTick<PositionState>();
 
         transform.position = newState.Position;
         transform.localEulerAngles = newState.Rotation;
