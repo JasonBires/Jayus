@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Jayus.TimeControl;
+using UnityEngine;
 
 namespace Jayus.Core
 {
@@ -24,6 +25,7 @@ namespace Jayus.Core
             container.Bind<IoC.IMonoBehaviourFactory>().AsSingle<IoC.MonoBehaviourFactory>();
             container.Bind<IStateTracker>().AsTransient<StateTracker>();
             container.Bind<IEventManager>().AsSingle<EventManager>();
+            container.Bind<IInputHandler>().AsSingle<InputHandler>();
 
             //Registration for the namespace 
             container.AutoRegisterTypesFromNamespace("Jayus.TimeControl");
@@ -46,5 +48,18 @@ namespace Jayus.Core
 
     public class GameContext : UnityContext<Main>
     {
+        [IoC.Inject]
+        private IInputHandler _inputHandler { get; set; }
+
+        void Start()
+        {
+            this.Inject();
+        }
+
+        //Used for updating of "global" services, such as input
+        void Update()
+        {
+            _inputHandler.UpdateKeys();
+        }
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Jayus.TimeControl
 {
-	public class BasicEntityTracking : GenericTracker<RigidBodyState>
+	public class RigidBodyTracking : GenericTracker<RigidBodyState>
 	{
         public override void Start()
         {

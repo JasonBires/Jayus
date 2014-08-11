@@ -4,6 +4,7 @@ using Jayus.Core;
 using Jayus.TimeControl;
 using Jayus.ObjectStates;
 using System;
+using Jayus.Events;
 
 public class CameraMover : ObjectBehavior
 {
@@ -36,7 +37,6 @@ public class CameraMover : ObjectBehavior
      */
     void Update()
     {
-        HandleKeypress();
         if (_timeControl.TimeSpeed < 0)
         {
             if (!timeReverse.isPlaying)
@@ -68,19 +68,6 @@ public class CameraMover : ObjectBehavior
             transform.localEulerAngles = new Vector3(yRotation, xRotation, 0);
 
             SaveState();
-        }
-    }
-
-    //TODO - Move out into another class
-    void HandleKeypress()
-    {
-        if (Input.GetKey(KeyCode.T))
-        {
-            _timeControl.TimeSpeed = -1.0F;
-        }
-        else
-        {
-            _timeControl.TimeSpeed = 1.0F;
         }
     }
 

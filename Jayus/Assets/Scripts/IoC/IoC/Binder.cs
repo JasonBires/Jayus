@@ -25,7 +25,7 @@ namespace IoC
 			_container.Register(type, provider);
 		}
 		
-		virtual public void AsSingle<T>() where T:Contractor, new()
+		virtual public void AsSingle<T>() where T:Contractor
 		{
 			_container.Register(type, typeof(T));
 		}
