@@ -23,6 +23,7 @@ namespace Jayus.Core
             //Manual registration
             container.Bind<IoC.IMonoBehaviourFactory>().AsSingle<IoC.MonoBehaviourFactory>();
             container.Bind<IStateTracker>().AsTransient<StateTracker>();
+            container.Bind<IEventManager>().AsSingle<EventManager>();
 
             //Registration for the namespace 
             container.AutoRegisterTypesFromNamespace("Jayus.TimeControl");

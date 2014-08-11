@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Jayus.Core;
 
 namespace Jayus.TimeControl
 {
@@ -16,7 +17,5 @@ namespace Jayus.TimeControl
         {
             TimeSpeed = 1.0F;
         }
-
-
     }
 }

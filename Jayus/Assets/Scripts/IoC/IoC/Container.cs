@@ -153,6 +153,18 @@ namespace IoC
                 (injectable as IInitialize).OnInject();
         }
 
+        private object TryInjectConstructorParams(IProvider provider)
+        {
+            var type = provider.contract;
+            var parameters = type.GetConstructors().First().GetParameters().ToList();
+            if (parameters.Count > 0)
+            {
+                var toInject = parameters.Select(x => Get(x.ParameterType));
+                return provider.Create(toInject.ToArray());
+            }
+            return null;
+        }
+
         virtual protected object Get(Type contract)
         {
             if (_providers.ContainsKey(contract) == true)
@@ -191,7 +203,7 @@ namespace IoC
 
         private object CreateDependency(IProvider provider)
         {
-            object obj = provider.Create();
+            object obj = TryInjectConstructorParams(provider) ?? provider.Create();
 
             _uniqueInstances[provider.contract] = obj; //seriously, this must be done before obj is injected to avoid circular dependencies
 
