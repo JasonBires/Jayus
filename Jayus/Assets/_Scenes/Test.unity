@@ -150,8 +150,9 @@ GameObject:
   - 23: {fileID: 738490836}
   - 54: {fileID: 738490835}
   - 114: {fileID: 738490840}
+  - 114: {fileID: 738490841}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -231,9 +232,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 738490834}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b17b59992fbbb1438eb87dec0b1d8aa, type: 3}
+  m_Script: {fileID: 11500000, guid: c66c43775057f7d4abd3fb8cd05117a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &738490841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 738490834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceae5c42cfe0b0641ad3abfcf4a54a5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractionMessage: Use
 --- !u!1 &973146994
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +327,7 @@ GameObject:
   - 114: {fileID: 1292831206}
   - 82: {fileID: 1292831207}
   - 82: {fileID: 1292831208}
+  - 114: {fileID: 1292831209}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -394,7 +408,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1292831200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5e244a3043c7a6499e493f77506a9a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f36a231e2109664981a324f00c704ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 30
@@ -517,6 +531,18 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+--- !u!114 &1292831209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1292831200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ad2df1747e04d45b96313506249026, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ReticleImage: {fileID: 2800000, guid: 6264917de7af75d45bfcebbcbfbfb5c3, type: 3}
 --- !u!1 &1873895789
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +553,7 @@ GameObject:
   - 4: {fileID: 1873895790}
   - 114: {fileID: 1873895791}
   m_Layer: 0
-  m_Name: 
+  m_Name: Global Context
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

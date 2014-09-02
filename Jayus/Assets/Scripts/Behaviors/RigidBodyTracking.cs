@@ -7,7 +7,7 @@ using Jayus.ObjectStates;
 using Jayus.TimeControl;
 using UnityEngine;
 
-namespace Jayus.TimeControl
+namespace Jayus.Behaviors
 {
 	public class RigidBodyTracking : GenericTracker<RigidBodyState>
 	{

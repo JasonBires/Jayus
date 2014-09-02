@@ -5,10 +5,11 @@ using System.Text;
 
 using Jayus.Core;
 using Jayus.ObjectStates;
+using UnityEngine;
 
 namespace Jayus.TimeControl
 {
-	public class GenericTracker<T> : ObjectBehavior where T : ObjectState
+    public class GenericTracker<T> : MonoBehaviour where T : ObjectState
 	{
         [IoC.Inject]
         protected IStateTracker _stateTracker { get; set; }
@@ -16,9 +17,9 @@ namespace Jayus.TimeControl
         [IoC.Inject]
         protected ITimeController _timeControl { get; set; }
 
-        public override void Start()
+        public virtual void Start()
         {
-            base.Start();
+            this.Inject();
         }
 
         protected virtual void Update()
